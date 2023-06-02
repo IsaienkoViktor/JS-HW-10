@@ -1,11 +1,9 @@
 import { fetchBreeds, fetchCatByBreed } from './cat-api';
-import SlimSelect from 'slim-select'
+import SlimSelect from 'slim-select';
+import Notiflix from 'notiflix';
+import 'slim-select/dist/slimselect.css';
 
-new SlimSelect({
-  select: '#selectElement'
-})
 
-console.log(fetchBreeds);
 
 const refs = {
   select: document.querySelector('.breed-select'),
@@ -20,7 +18,7 @@ function loadCAtImg(){
   refs.select.classList.toggle('invisible')
   refs.catInfo.classList.toggle('invisible')
   refs.loader.classList.toggle('invisible')
-  refs.error.classList.toggle('invisible')
+  refs.error.classList.add('invisible')
 
 fetchBreeds()
   .then(data => {
@@ -28,10 +26,14 @@ fetchBreeds()
     const markup = data
       .map(breed => `<option value="${breed.id}">${breed.name}</option>`)
       .join('');
-    refs.select.insertAdjacentHTML('beforeend', markup);
+      refs.select.insertAdjacentHTML('beforeend', markup);
+      new SlimSelect({
+  select: '#texas'
+})
   })
     .catch(err => {
-      refs.error.classList.toggle('invisible')
+        refs.error.classList.remove('invisible')
+        Notiflix.Notify.failure('Oops! Something went wrong! Try reloading the page!');
     console.log(err);
     })
     .finally(() => {
@@ -48,10 +50,10 @@ loadCAtImg();
 refs.select.addEventListener('change', onChangeSelect);
 function onChangeSelect(event) {
     // loadCAtImg();
-    console.log(allBreeds);
+    // console.log(allBreeds);
   const selectValue = event.target.value;
     const breedInfo = allBreeds.find(breed => breed.id === selectValue);
-    loadCAtImg();
+    // loadCAtImg();
   console.log(breedInfo);
   fetchCatByBreed(selectValue).then(([breedImg]) => {
     console.log(breedImg);
@@ -59,12 +61,11 @@ function onChangeSelect(event) {
         <img src="${breedImg.url}" alt="${breedInfo.name}" width="300"/>
         <h2>${breedInfo.name}</h2>
         <p>${breedInfo.description}</p>
-        <p>Temperament:${breedInfo.temperament}</p>`;
+        <p><b>Temperament:</b>${breedInfo.temperament}</p>`;
     refs.catInfo.innerHTML = catInfoMarkup;
   })
 }
 
-fetchCatByBreed('Aegean').then(data => console.log(data));
 
 
 
@@ -110,74 +111,3 @@ fetchCatByBreed('Aegean').then(data => console.log(data));
 
 
 
-
-// const ref = {
-//     select: document.querySelector('.breed-select'),
-//     container: document.querySelector('.cat-info')
-// }
-
-// const onClickCatList = () => {
-
-// }
-
-
-// ref.select.addEventListener('change', onClickCatList)
-
-
-//  fetch('https://api.thecatapi.com/v1/breeds')
-//      .then(response => {
-//         //  const selectCatList = ref.select
-//         //  `<option value='${response.id}'>${response.name}</option>`
-//     console.log(response);
-
-//     if (!response.ok) {
-//       throw new Error(response.status);
-//     }
-
-//     return response.json();
-//   })
-//   .then(data => {
-//     console.log(data);
-//   })
-//   .catch(err => {
-//     console.log(err);
-//   });
-
-
-
-// import getPockemon from "./fetchPockemon.js";
-
-// const refs = {
-//   input: document.querySelector('[type="text"]'),
-//   button: document.querySelector("button"),
-//   container: document.querySelector(".container"),
-// };
-
-// refs.button.addEventListener("click", onBtnClick);
-
-// function onBtnClick() {
-//   const inputValue = refs.input.value.toLowerCase().trim();
-//   getPockemon(inputValue).then((data) => {
-//     console.log(data);
-//     const markup = `<div><p>${data.name}</p><img src="${data.sprites.other.dream_world.front_default}" alt="${data.name}"></div>`;
-//     refs.container.innerHTML = markup;
-//   });
-// }
-
-// getPockemon("pikachu").then((data) => console.log(data));
-
-
-
-// export default function fetchPockemon (namePock){
-
-//     return fetch (`https://pokeapi.co/api/v2/pokemon/${namePock}`).
-//     then (response => {
-//         if (!response.ok) {
-//             throw new Error (response.status);
-//         }
-//         return response.json();
-//     })
-//     .catch(error => {
-//         console.log(error)
-//     })
-// }

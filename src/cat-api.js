@@ -5,7 +5,7 @@ export function fetchBreeds() {
     if (!response.ok) {
       throw new Error(response.status);
     }
-    console.log(123);
+
    return response.json();
   });
 }

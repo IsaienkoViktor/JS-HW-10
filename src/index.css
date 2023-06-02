@@ -47,3 +47,9 @@
 .invisible {
   display: none;
 }
+.breed-select {
+  margin-bottom: 40px;
+}
+.cat-info {
+  max-width: 500px;
+}
