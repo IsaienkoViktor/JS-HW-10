@@ -41,7 +41,7 @@ fetchBreeds()
       refs.select.classList.toggle('invisible')
       refs.catInfo.classList.toggle('invisible')
       refs.loader.classList.toggle('invisible')         
-      }, 1500)
+      }, 10000)
   });
 }
 loadCAtImg();
